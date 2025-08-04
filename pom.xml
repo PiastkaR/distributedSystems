@@ -68,7 +68,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>Worker</mainClass>
+							<mainClass>LeaderApplication</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

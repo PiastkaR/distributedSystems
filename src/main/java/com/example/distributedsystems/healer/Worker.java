@@ -12,11 +12,11 @@ import java.util.Random;
 import java.util.concurrent.locks.LockSupport;
 
 public class Worker implements Watcher {
-    public static void main(String[] args) throws IOException, InterruptedException {
-        Worker worker = new Worker();
-        worker.connectToZookeeper();
-        worker.run();
-    }
+//    public static void main(String[] args) throws IOException, InterruptedException {
+//        Worker worker = new Worker();
+//        worker.connectToZookeeper();
+//        worker.run();
+//    }
     private static final String ZOOKEEPER_ADDRESS = "localhost:2181";
     private static final int SESSION_TIMEOUT = 3000;
 

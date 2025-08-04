@@ -1,5 +1,6 @@
 package com.example.distributedsystems.leader;
 
+import com.example.distributedsystems.serviceRegistry.OnElectionCallback;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -18,6 +19,7 @@ public class LeaderElection implements Watcher {
     private static final String ELECTION_NAMESPACE = "/election";
     private ZooKeeper zooKeeper;
     private String currentZnodeName;
+    private OnElectionCallback onElectionCallback;
 //commented for worker-healer test
 //    public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
 //        LeaderElection leaderElection = new LeaderElection();
@@ -29,6 +31,12 @@ public class LeaderElection implements Watcher {
 //        leaderElection.close();
 //        System.out.println("Disconnected from Zookeeper, exiting application");
 //    }
+
+    public LeaderElection(ZooKeeper zooKeeper, OnElectionCallback onElectionCallback) {
+        this.zooKeeper = zooKeeper;
+        this.onElectionCallback = onElectionCallback;
+    }
+
 
     public void volunteerForLeadership() throws KeeperException, InterruptedException {
         String znodePrefix = ELECTION_NAMESPACE + "/c_";
@@ -49,6 +57,7 @@ public class LeaderElection implements Watcher {
 
             if (smallestChild.equals(currentZnodeName)) {
                 System.out.println("I am the leader");
+                onElectionCallback.onElectedToBeLeader();
                 return;
             } else {
                 System.out.println("I am not the leader");
@@ -57,6 +66,7 @@ public class LeaderElection implements Watcher {
                 predecessorStat = zooKeeper.exists(ELECTION_NAMESPACE + "/" + predecessorZnodeName, this);
             }
         }
+        onElectionCallback.onWorker();
 
         System.out.println("Watching znode " + predecessorZnodeName);
         System.out.println();
