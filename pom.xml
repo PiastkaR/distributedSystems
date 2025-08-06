@@ -68,7 +68,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>LeaderApplication</mainClass>
+							<mainClass>WebServer</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

@@ -1,8 +1,5 @@
 package com.example.distributedsystems.leader;
 
-import com.example.distributedsystems.serviceRegistry.OnElectionAction;
-import com.example.distributedsystems.serviceRegistry.ServiceRegistry;
-import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
@@ -15,23 +12,23 @@ public class LeaderApplication implements Watcher {
         private static final int DEFAULT_PORT = 8080;
         private ZooKeeper zooKeeper;
 
-        public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
-                int currentServerPort = args.length == 1 ? Integer.parseInt(args[0]) : DEFAULT_PORT;
-                LeaderApplication application = new LeaderApplication();
-                ZooKeeper zooKeeper = application.connectToZookeeper();
-
-                ServiceRegistry serviceRegistry = new ServiceRegistry(zooKeeper);
-
-                OnElectionAction onElectionAction = new OnElectionAction(serviceRegistry, currentServerPort);
-
-                LeaderElection leaderElection = new LeaderElection(zooKeeper, onElectionAction);
-                leaderElection.volunteerForLeadership();
-                leaderElection.reelectLeader();
-
-                application.run();
-                application.close();
-                System.out.println("Disconnected from Zookeeper, exiting application");
-        }
+//        public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
+//                int currentServerPort = args.length == 1 ? Integer.parseInt(args[0]) : DEFAULT_PORT;
+//                LeaderApplication application = new LeaderApplication();
+//                ZooKeeper zooKeeper = application.connectToZookeeper();
+//
+//                ServiceRegistry serviceRegistry = new ServiceRegistry(zooKeeper);
+//
+//                OnElectionAction onElectionAction = new OnElectionAction(serviceRegistry, currentServerPort);
+//
+//                LeaderElection leaderElection = new LeaderElection(zooKeeper, onElectionAction);
+//                leaderElection.volunteerForLeadership();
+//                leaderElection.reelectLeader();
+//
+//                application.run();
+//                application.close();
+//                System.out.println("Disconnected from Zookeeper, exiting application");
+//        }
 
         public ZooKeeper connectToZookeeper() throws IOException {
                 this.zooKeeper = new ZooKeeper(ZOOKEEPER_ADDRESS, SESSION_TIMEOUT, this);
