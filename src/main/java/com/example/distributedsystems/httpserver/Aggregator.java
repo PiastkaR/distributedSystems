@@ -20,7 +20,7 @@ public class Aggregator {
             String task = tasks.get(i);
 
             byte[] requestPayload = task.getBytes();
-            futures[i] = webClient.sendTask(workerAddress, requestPayload);
+//            futures[i] = webClient.sendTask(workerAddress, requestPayload);
             Thread.sleep(1000);
         }
 

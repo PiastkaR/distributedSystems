@@ -1,5 +1,8 @@
 package com.example.distributedsystems.httpserver;
 
+import com.example.distributedsystems.tfidf.model.Result;
+import com.example.distributedsystems.tfidf.model.SerializationUtils;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,13 +18,14 @@ public class WebClient {
                 .build();
     }
 
-    public CompletableFuture<String> sendTask(String url, byte[] requestPayload) {
+    public CompletableFuture<Result> sendTask(String url, byte[] requestPayload) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofByteArray(requestPayload))
                 .uri(URI.create(url))
                 .build();
 
-        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body);
+        return client.sendAsync(request, HttpResponse.BodyHandlers.ofByteArray())
+                .thenApply(HttpResponse::body)
+                .thenApply(responseBody -> (Result) SerializationUtils.deserialize(responseBody));
     }
 }
